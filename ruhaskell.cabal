@@ -1,4 +1,4 @@
-name:              haskell-ru
+name:              ruhaskell
 version:           0.0.0
 cabal-version:     >= 1.8
 build-type:        Simple
@@ -80,13 +80,13 @@ library
                  , vector
                  , time
 
-executable         haskell-ru
+executable         ruhaskell
     if flag(library-only)
         Buildable: False
 
     main-is:           main.hs
     hs-source-dirs:    app
-    build-depends:     base, haskell-ru
+    build-depends:     base, ruhaskell
 
     ghc-options:       -threaded -O2 -rtsopts -with-rtsopts=-N
 
@@ -113,7 +113,7 @@ test-suite test
                 TupleSections
 
     build-depends: base
-                 , haskell-ru
+                 , ruhaskell
                  , yesod-test >= 1.4.2 && < 1.5
                  , yesod-core
                  , yesod
