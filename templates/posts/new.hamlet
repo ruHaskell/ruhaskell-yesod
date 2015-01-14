@@ -1,0 +1,4 @@
+<form action=@{BlogPostsR} method=post enctype=#{enctype}>
+  ^{blogPostWidget}
+  <div>
+    <input type=submit value="Add">

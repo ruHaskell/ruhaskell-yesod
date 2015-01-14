@@ -1,0 +1,5 @@
+<h2>#{blogPostTitle blogPost}
+<a href=@{EditBlogPostR blogPostId}>Edit post
+<form method=post action=@{BlogPostR blogPostId}?_method=DELETE>
+  <button type=submit>Delete post
+<div .content>#{blogPostContent blogPost}

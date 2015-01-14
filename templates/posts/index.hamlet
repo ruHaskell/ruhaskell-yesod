@@ -1,0 +1,9 @@
+<a href=@{NewBlogPostR}>Add new post
+<hr>
+$if null blogPosts
+  <p>No posts yet
+$else
+  <ul>
+    $forall Entity blogPostId blogPost <- blogPosts
+      <li>
+        <a href=@{BlogPostR blogPostId}>#{blogPostTitle blogPost}

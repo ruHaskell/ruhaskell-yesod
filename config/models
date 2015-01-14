@@ -2,3 +2,4 @@ BlogPost
     title Text
     content Html
     created UTCTime
+    deriving
