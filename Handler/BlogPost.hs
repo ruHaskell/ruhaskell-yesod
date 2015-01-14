@@ -6,7 +6,9 @@ blogPostForm :: Maybe BlogPost -> Form BlogPost
 blogPostForm mpost = renderDivs $ BlogPost
     <$> areq textField "Title"   (blogPostTitle <$> mpost)
     <*> areq htmlField "Content" (blogPostContent <$> mpost)
-    <*> maybe (lift (liftIO getCurrentTime)) (\p -> pure $ blogPostCreated p) mpost
+    <*> maybe (lift now) (pure . blogPostCreated) mpost
+  where
+    now = liftIO getCurrentTime
 
 getBlogPostsR :: Handler Html
 getBlogPostsR = do
