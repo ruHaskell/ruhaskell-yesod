@@ -51,11 +51,13 @@ library
                  , yesod-core                    >= 1.4.0      && < 1.5
                  , yesod-static                  >= 1.4.0.3    && < 1.5
                  , yesod-form                    >= 1.4.0      && < 1.5
+                 , yesod-text-markdown
                  , classy-prelude                >= 0.10.2
                  , classy-prelude-conduit        >= 0.10.2
                  , classy-prelude-yesod          >= 0.10.2
                  , bytestring                    >= 0.9        && < 0.11
                  , text                          >= 0.11       && < 2.0
+                 , markdown
                  , persistent                    >= 2.0        && < 2.2
                  , persistent-postgresql         >= 2.1.1      && < 2.2
                  , persistent-template           >= 2.0        && < 2.2

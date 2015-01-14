@@ -1,11 +1,12 @@
 module Handler.BlogPost where
 
 import Import
+import Yesod.Text.Markdown
 
 blogPostForm :: Maybe BlogPost -> Form BlogPost
 blogPostForm mpost = renderDivs $ BlogPost
-    <$> areq textField "Title"   (blogPostTitle <$> mpost)
-    <*> areq htmlField "Content" (blogPostContent <$> mpost)
+    <$> areq textField     "Title"   (blogPostTitle   <$> mpost)
+    <*> areq markdownField "Content" (blogPostContent <$> mpost)
     <*> maybe (lift now) (pure . blogPostCreated) mpost
   where
     now = liftIO getCurrentTime

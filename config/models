@@ -1,5 +1,5 @@
 BlogPost
     title Text
-    content Html
+    content Markdown
     created UTCTime
     deriving
