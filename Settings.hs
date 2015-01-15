@@ -1,8 +1,3 @@
--- | Settings are centralized, as much as possible, into this file. This
--- includes database connection settings, static file locations, etc.
--- In addition, you can configure a number of different aspects of Yesod
--- by overriding methods in the Yesod typeclass. That instance is
--- declared in the Foundation.hs file.
 module Settings where
 
 import ClassyPrelude.Yesod
@@ -18,40 +13,18 @@ import Yesod.Default.Config2       (applyEnvValue, configSettingsYml)
 import Yesod.Default.Util          (WidgetFileSettings, widgetFileNoReload,
                                     widgetFileReload)
 
--- | Runtime settings to configure this application. These settings can be
--- loaded from various sources: defaults, environment variables, config files,
--- theoretically even a database.
 data AppSettings = AppSettings
     { appStaticDir              :: String
-    -- ^ Directory from which to serve static files.
     , appDatabaseConf           :: PostgresConf
-    -- ^ Configuration settings for accessing the database.
     , appRoot                   :: Text
-    -- ^ Base for all generated URLs.
     , appHost                   :: HostPreference
-    -- ^ Host/interface the server should bind to.
     , appPort                   :: Int
-    -- ^ Port to listen on
     , appIpFromHeader           :: Bool
-    -- ^ Get the IP address from the header when logging. Useful when sitting
-    -- behind a reverse proxy.
-
     , appDetailedRequestLogging :: Bool
-    -- ^ Use detailed request logging system
     , appShouldLogAll           :: Bool
-    -- ^ Should all log messages be displayed?
     , appReloadTemplates        :: Bool
-    -- ^ Use the reload version of templates
     , appMutableStatic          :: Bool
-    -- ^ Assume that files in the static dir may change after compilation
     , appSkipCombining          :: Bool
-    -- ^ Perform no stylesheet/script combining
-
-    -- Example app-specific configuration values.
-    , appCopyright              :: Text
-    -- ^ Copyright text to appear in the footer of the page
-    , appAnalytics              :: Maybe Text
-    -- ^ Google Analytics code
     }
 
 instance FromJSON AppSettings where
@@ -74,9 +47,6 @@ instance FromJSON AppSettings where
         appReloadTemplates        <- o .:? "reload-templates" .!= defaultDev
         appMutableStatic          <- o .:? "mutable-static"   .!= defaultDev
         appSkipCombining          <- o .:? "skip-combining"   .!= defaultDev
-
-        appCopyright              <- o .: "copyright"
-        appAnalytics              <- o .:? "analytics"
 
         return AppSettings {..}
 
