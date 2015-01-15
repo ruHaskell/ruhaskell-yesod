@@ -1,0 +1,6 @@
+<ul .post-list>
+  $forall Entity blogPostId blogPost <- blogPosts
+    <li>
+      <div .post-title>
+        <a href=@{BlogPostR blogPostId}>#{blogPostTitle blogPost}
+      <div .post-date>#{renderDateAsTuple $ blogPostCreated blogPost}

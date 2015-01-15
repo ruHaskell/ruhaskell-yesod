@@ -1,6 +1,7 @@
 module Handler.Home where
 
 import Import
+import Handler.BlogPost (blogPostList)
 
 getHomeR :: Handler Html
 getHomeR = do

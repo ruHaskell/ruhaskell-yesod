@@ -3,6 +3,9 @@ module Handler.BlogPost where
 import Import
 import Yesod.Text.Markdown
 
+blogPostList :: [Entity BlogPost] -> Widget
+blogPostList blogPosts = $(widgetFile "posts/list")
+
 blogPostForm :: Maybe BlogPost -> Form BlogPost
 blogPostForm mpost = renderDivs $ BlogPost
     <$> areq textField     "Title"   (blogPostTitle   <$> mpost)

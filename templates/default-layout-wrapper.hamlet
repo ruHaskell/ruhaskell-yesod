@@ -43,7 +43,7 @@ $doctype 5
                                 <span .fa .fa-pencil>
                             Статьи
 
-      <div #main role=main>
+      <div #content role=main>
         ^{pageBody pc}
       <footer>
 

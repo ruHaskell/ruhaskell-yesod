@@ -4,11 +4,10 @@
   Наше стремление — объединить всех хаскелистов, говорящих по-русски.
   Наша цель — увеличить долю использования Haskell в России.
 
-<h1>Последние публикации
+<div style="padding-top: 40px">
+<h1>Последние статьи
 
-<ul>
-  $forall Entity blogPostId blogPost <- blogPosts
-    <li>
-      <a href=@{BlogPostR blogPostId}>#{blogPostTitle blogPost}
+^{blogPostList blogPosts}
 
-<a href=@{BlogPostsR}>Остальные
+<div .clear-button>
+  <a href=@{BlogPostsR}>Остальные статьи
