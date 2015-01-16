@@ -1,5 +1,11 @@
-<h2>#{blogPostTitle blogPost}
-<a href=@{EditBlogPostR blogPostId}>Edit post
-<form method=post action=@{BlogPostR blogPostId}?_method=DELETE>
-  <button type=submit>Delete post
-<div .content>#{blogPostContent blogPost}
+<h1>#{blogPostTitle blogPost}
+
+<div .row>
+  <div .col-xs-5 .col-sm-5 .col-md-4 .col-lg-4>
+     <div .post-info>
+        <strong>where</strong> author&nbsp;&nbsp;&nbsp;= ""<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= #{renderDateAsTuple $ blogPostCreated blogPost}<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;category = ""<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= []
+
+#{blogPostContent blogPost}
