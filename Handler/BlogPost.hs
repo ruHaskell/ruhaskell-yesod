@@ -2,17 +2,19 @@ module Handler.BlogPost where
 
 import Import
 import Yesod.Text.Markdown
+import Yesod.Form.Bootstrap3
 
 blogPostList :: [Entity BlogPost] -> Widget
 blogPostList blogPosts = $(widgetFile "posts/list")
 
 blogPostForm :: Maybe BlogPost -> Form BlogPost
-blogPostForm mpost = renderDivs $ BlogPost
-    <$> areq textField     "Title"   (blogPostTitle   <$> mpost)
-    <*> areq markdownField "Content" (blogPostContent <$> mpost)
+blogPostForm mpost = renderBootstrap3 formLayout $ BlogPost
+    <$> areq textField     (bfs ("Заголовок"  :: Text)) (blogPostTitle   <$> mpost)
+    <*> areq markdownField (bfs ("Содержание" :: Text)) (blogPostContent <$> mpost)
     <*> maybe (lift now) (pure . blogPostCreated) mpost
   where
-    now = liftIO getCurrentTime
+    now        = liftIO getCurrentTime
+    formLayout = BootstrapBasicForm
 
 getBlogPostsR :: Handler Html
 getBlogPostsR = do
