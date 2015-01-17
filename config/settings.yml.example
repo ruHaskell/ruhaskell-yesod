@@ -14,9 +14,9 @@ heroku: false
 # skip-combining: false
 
 database:
-  user:     "_env:PGUSER:b0oh"
-  password: "_env:PGPASS:"
+  user:     "_env:PGUSER:pg_user"
+  password: "_env:PGPASS:pg_pass"
   host:     "_env:PGHOST:localhost"
   port:     "_env:PGPORT:5432"
-  database: "_env:PGDATABASE:haskell_ru"
+  database: "_env:PGDATABASE:pg_name"
   poolsize: "_env:PGPOOLSIZE:10"

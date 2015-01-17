@@ -1,3 +1,4 @@
+config/settings.yml
 dist*
 static/tmp/
 static/combined/
