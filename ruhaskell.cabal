@@ -1,4 +1,6 @@
 name:              ruhaskell
+license:           MIT
+license-file:      LICENSE
 version:           0.0.0
 cabal-version:     >= 1.8
 build-type:        Simple
