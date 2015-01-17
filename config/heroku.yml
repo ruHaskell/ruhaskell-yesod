@@ -1,0 +1,14 @@
+static-dir:       "static"
+host:             "*4"
+port:             "_env:PORT:3000"
+approot:          "http://ruhaskell.herokuapp.com"
+ip-from-header:   false
+
+heroku:           true
+
+development:      false
+detailed-logging: false
+should-log-all:   false
+reload-templates: false
+mutable-static:   false
+skip-combining:   false

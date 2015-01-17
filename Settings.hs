@@ -25,6 +25,7 @@ data AppSettings = AppSettings
     , appReloadTemplates        :: Bool
     , appMutableStatic          :: Bool
     , appSkipCombining          :: Bool
+    , appHeroku                 :: Bool
     }
 
 instance FromJSON AppSettings where
@@ -41,6 +42,8 @@ instance FromJSON AppSettings where
         appHost                   <- fromString <$> o .: "host"
         appPort                   <- o .: "port"
         appIpFromHeader           <- o .: "ip-from-header"
+
+        appHeroku                 <- o .: "heroku"
 
         appDetailedRequestLogging <- o .:? "detailed-logging" .!= defaultDev
         appShouldLogAll           <- o .:? "should-log-all"   .!= defaultDev
