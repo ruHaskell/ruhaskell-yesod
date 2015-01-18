@@ -1,1 +1,1 @@
-web: cabal run -- ./config/heroku.yml
+web: ./dist/build/ruhaskell/ruhaskell ./config/heroku.yml
