@@ -20,6 +20,7 @@ library
                      Import.NoFoundation
                      Model
                      Settings
+                     Settings.Config
                      Settings.StaticFiles
                      Settings.Heroku
                      Handler.Common

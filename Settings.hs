@@ -9,9 +9,10 @@ import Data.Yaml                   (decodeEither')
 import Database.Persist.Postgresql (PostgresConf)
 import Language.Haskell.TH.Syntax  (Exp, Name, Q)
 import Network.Wai.Handler.Warp    (HostPreference)
-import Yesod.Default.Config2       (applyEnvValue, configSettingsYml)
+import Yesod.Default.Config2       (applyEnvValue)
 import Yesod.Default.Util          (WidgetFileSettings, widgetFileNoReload,
                                     widgetFileReload)
+import Settings.Config             (configPath)
 
 data AppSettings = AppSettings
     { appStaticDir              :: String
@@ -77,7 +78,7 @@ widgetFile = (if appReloadTemplates compileTimeAppSettings
 
 -- | Raw bytes at compile time of @config/settings.yml@
 configSettingsYmlBS :: ByteString
-configSettingsYmlBS = $(embedFile configSettingsYml)
+configSettingsYmlBS = $(configPath >>= embedFile)
 
 -- | @config/settings.yml@, parsed to a @Value@.
 configSettingsYmlValue :: Value
