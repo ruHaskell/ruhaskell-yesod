@@ -1,6 +1,6 @@
 # ruhaskell.herokuapp.com
 
-Full source code for website. Attempt to make copy of ruhaskell.org using Yesod.
+Full source code for website. Attempt to make a copy of ruhaskell.org using Yesod.
 
 ### System requirements
 You must have Haskell, Yesod and Postgresql installed.
@@ -15,3 +15,4 @@ $ cabal install --only-dependencies --reorder-goals --max-backjumps=-1
 $ cp config/settings.yml.example config/settings.yml
 $ open config/settings.yml
 $ yesod devel
+```
