@@ -1,4 +1,9 @@
+Category
+    title Text
+    UniqueTitle title
+
 BlogPost
+    category CategoryId Maybe
     title Text
     content Markdown
     created UTCTime

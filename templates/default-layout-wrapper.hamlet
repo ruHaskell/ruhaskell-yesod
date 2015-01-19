@@ -33,7 +33,17 @@ $doctype 5
                         <span .archive-link>
                           <span .fa .fa-pencil>
                         Статьи
+                    <li>
+                      <a href=@{CategoriesR}>
+                        <span .archive-link>
+                          <span .fa .fa-star>
+                        Категории
                     <li .divider>
+                    <li>
+                      <a href=@{NewCategoryR}>
+                        <span .archive-link>
+                          <span .fa .fa-pencil>
+                        Добавить категорию
                     <li>
                       <a href=@{NewBlogPostR}>
                         <span .archive-link>

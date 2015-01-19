@@ -3,8 +3,12 @@
 /favicon.ico FaviconR GET
 /robots.txt RobotsR GET
 
-/                       HomeR           GET
-/posts                  BlogPostsR      GET POST
-/posts/new              NewBlogPostR    GET
-/posts/!#BlogPostId     BlogPostR       GET PATCH DELETE
-/posts/#BlogPostId/edit EditBlogPostR   GET
+/                            HomeR         GET
+/posts                       BlogPostsR    GET POST
+/posts/new                   NewBlogPostR  GET
+/posts/!#BlogPostId          BlogPostR     GET PATCH DELETE
+/posts/#BlogPostId/edit      EditBlogPostR GET
+/categories                  CategoriesR   GET POST
+/categories/new              NewCategoryR  GET
+/categories/!#CategoryId     CategoryR     GET PATCH DELETE
+/categories/#CategoryId/edit EditCategoryR GET

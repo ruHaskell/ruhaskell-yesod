@@ -26,6 +26,7 @@ library
                      Handler.Common
                      Handler.Home
                      Handler.BlogPost
+                     Handler.Category
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT

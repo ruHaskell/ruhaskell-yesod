@@ -26,6 +26,7 @@ import Settings.Heroku                      (herokuDbConf)
 import Handler.Common
 import Handler.Home
 import Handler.BlogPost
+import Handler.Category
 
 mkYesodDispatch "App" resourcesApp
 

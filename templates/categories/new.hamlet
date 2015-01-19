@@ -1,0 +1,3 @@
+<form action=@{CategoriesR} method=post enctype=#{enctype}>
+  ^{formWidget}
+  <button .btn .btn-default type=submit>Добавить

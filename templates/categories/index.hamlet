@@ -1,0 +1,17 @@
+$newline never
+<h1>Категории
+
+<div #tagsCloud>
+  <div .row>
+    <div .col-md-2 .col-sm-1 .col-xs-1>
+
+    <div .col-md-8 .col-sm-10 .col-xs-10>
+      <div .alert .alert-info role=alert>
+        $forall ((Entity categoryId category, Single count), ix) <- withRemaining categories
+          <a href=@{CategoryR categoryId}>
+            #{categoryTitle category}
+            <span .badge-for-tag-link>#{count}
+          $if ix /= 0
+            , #
+
+    <div .col-md-2 .col-sm-1 .col-xs-1>

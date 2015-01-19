@@ -8,13 +8,13 @@ blogPostList :: [Entity BlogPost] -> Widget
 blogPostList blogPosts = $(widgetFile "posts/list")
 
 blogPostForm :: Maybe BlogPost -> Form BlogPost
-blogPostForm mpost = renderBootstrap3 formLayout $ BlogPost
-    <$> areq textField     (bfs ("Заголовок"  :: Text)) (blogPostTitle   <$> mpost)
-    <*> areq markdownField (bfs ("Содержание" :: Text)) (blogPostContent <$> mpost)
-    <*> maybe (lift now) (pure . blogPostCreated) mpost
+blogPostForm mpost = renderBootstrap3 BootstrapBasicForm $ BlogPost
+                     <$> pure Nothing
+                     <*> areq textField     (bfs ("Заголовок"  :: Text)) (blogPostTitle   <$> mpost)
+                     <*> areq markdownField (bfs ("Содержание" :: Text)) (blogPostContent <$> mpost)
+                     <*> maybe (lift now) (pure . blogPostCreated) mpost
   where
-    now        = liftIO getCurrentTime
-    formLayout = BootstrapBasicForm
+    now = liftIO getCurrentTime
 
 getBlogPostsR :: Handler Html
 getBlogPostsR = do
