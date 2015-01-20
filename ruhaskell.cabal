@@ -23,10 +23,12 @@ library
                      Settings.Config
                      Settings.StaticFiles
                      Settings.Heroku
+                     Helper
                      Handler.Common
                      Handler.Home
                      Handler.BlogPost
                      Handler.Category
+                     Handler.Tag
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT

@@ -1,0 +1,3 @@
+<form action=@{TagsR} method=post enctype=#{enctype}>
+  ^{formWidget}
+  <button .btn .btn-default type=submit>Добавить

@@ -1,6 +1,6 @@
 Category
     title Text
-    UniqueTitle title
+    UniqueCategory title
 
 BlogPost
     category CategoryId Maybe
@@ -8,3 +8,12 @@ BlogPost
     content Markdown
     created UTCTime
     deriving
+
+Tag
+    title Text
+    UniqueTag title
+
+BlogPostTag
+    blogPostId BlogPostId
+    tagId TagId
+    UniqueBlogPostTag blogPostId tagId

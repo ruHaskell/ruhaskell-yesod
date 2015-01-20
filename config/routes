@@ -12,3 +12,7 @@
 /categories/new              NewCategoryR  GET
 /categories/!#CategoryId     CategoryR     GET PATCH DELETE
 /categories/#CategoryId/edit EditCategoryR GET
+/tags                        TagsR         GET POST
+/tags/new                    NewTagR       GET
+/tags/!#TagId                TagR          GET PATCH DELETE
+/tags/#TagId/edit            EditTagR      GET

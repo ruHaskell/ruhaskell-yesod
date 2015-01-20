@@ -34,21 +34,31 @@ $doctype 5
                           <span .fa .fa-pencil>
                         Статьи
                     <li>
+                      <a href=@{TagsR}>
+                        <span .archive-link>
+                          <span .fa .fa-tags>
+                        Теги
+                    <li>
                       <a href=@{CategoriesR}>
                         <span .archive-link>
                           <span .fa .fa-star>
                         Категории
                     <li .divider>
                     <li>
-                      <a href=@{NewCategoryR}>
-                        <span .archive-link>
-                          <span .fa .fa-pencil>
-                        Добавить категорию
-                    <li>
                       <a href=@{NewBlogPostR}>
                         <span .archive-link>
                           <span .fa .fa-pencil>
                         Добавить статью
+                    <li>
+                      <a href=@{NewTagR}>
+                        <span .archive-link>
+                          <span .fa .fa-pencil>
+                        Добавить тег
+                    <li>
+                      <a href=@{NewCategoryR}>
+                        <span .archive-link>
+                          <span .fa .fa-pencil>
+                        Добавить категорию
 
       <div #content role=main>
         ^{pageBody pc}
