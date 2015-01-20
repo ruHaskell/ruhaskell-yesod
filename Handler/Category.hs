@@ -19,7 +19,7 @@ getCategoriesR = do
     defaultLayout $(widgetFile "categories/index")
   where
     sql = "select ??, count(distinct blog_post.id) from category\
-           left join blog_post on category.id = blog_post.category group by category.id"
+           left join blog_post on category.id = blog_post.category_id group by category.id"
 
     selectCategories :: Handler [(Entity Category, Single Int)]
     selectCategories = runDB $ rawSql sql []
