@@ -29,7 +29,7 @@ postTagsR = do
     ((res, formWidget), enctype) <- runFormPost $ tagForm Nothing
     case res of
         FormSuccess tag -> do
-            runDB $ insert tag
+            _ <- runDB $ insert tag
             setMessage "Tag was added"
             redirect TagsR
         _ -> defaultLayout $(widgetFile "tags/new")
@@ -42,7 +42,7 @@ getNewTagR = do
 getTagR :: TagId -> Handler Html
 getTagR tagId = do
     tag <- runDB $ get404 tagId
-    blogPosts <- selectBlogPosts tagId
+    blogPosts <- selectBlogPosts
     defaultLayout $(widgetFile "tags/show")
   where
     sql = "select ?? from blog_post \
@@ -50,8 +50,8 @@ getTagR tagId = do
            where blog_post_tag.tag_id = ? \
            order by blog_post.created desc"
 
-    selectBlogPosts :: TagId -> Handler [Entity BlogPost]
-    selectBlogPosts tagId = runDB $ rawSql sql (keyToValues tagId)
+    selectBlogPosts :: Handler [Entity BlogPost]
+    selectBlogPosts = runDB $ rawSql sql (keyToValues tagId)
 
 patchTagR :: TagId -> Handler Html
 patchTagR tagId = do

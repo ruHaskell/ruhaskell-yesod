@@ -1,21 +1,17 @@
 module Handler.Category where
 
 import Import
+import Helper
 import Yesod.Form.Bootstrap3
 import Database.Persist.Sql (Single(..), rawSql)
 import Handler.BlogPost (blogPostList)
 
 categoryForm :: Maybe Category -> Form Category
 categoryForm mcat = renderBootstrap3 BootstrapBasicForm $ Category
-                    <$> areq titleField (bfs ("Заголовок" :: Text)) (categoryTitle <$> mcat)
+                    <$> areq titleField (bfs ("Заголовок" :: Text)) mtitle
   where
-    titleField   = checkM isUniq textField
-    exclude      = maybe [] (\t -> [CategoryTitle !=. t]) (categoryTitle <$> mcat)
-    isUniq title = do
-        categoryCount <- runDB . count $ [CategoryTitle ==. title] ++ exclude
-        return $ if categoryCount > 0
-                 then Left ("Такая категория уже есть" :: Text)
-                 else Right title
+    mtitle     = categoryTitle <$> mcat
+    titleField = checkM (isUniq ("Такая категория уже есть" :: Text) CategoryTitle mtitle) textField
 
 getCategoriesR :: Handler Html
 getCategoriesR = do
@@ -33,7 +29,7 @@ postCategoriesR = do
     ((res, formWidget), enctype) <- runFormPost $ categoryForm Nothing
     case res of
         FormSuccess category -> do
-            runDB $ insert category
+            _ <- runDB $ insert category
             setMessage "Category was added"
             redirect CategoriesR
         _ -> defaultLayout $(widgetFile "categories/new")
