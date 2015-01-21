@@ -9,11 +9,16 @@ blogPostList blogPosts = $(widgetFile "posts/list")
 
 blogPostForm :: Maybe BlogPost -> Form BlogPost
 blogPostForm mpost = renderBootstrap3 BootstrapBasicForm $ BlogPost
-                     <$> pure Nothing
-                     <*> areq textField     (bfs ("Заголовок"  :: Text)) (blogPostTitle   <$> mpost)
-                     <*> areq markdownField (bfs ("Содержание" :: Text)) (blogPostContent <$> mpost)
-                     <*> maybe (lift now) (pure . blogPostCreated) mpost
+    <$> aopt categoriesList (bfs ("Категория"  :: Text)) (blogPostCategoryId <$> mpost)
+    <*> areq textField      (bfs ("Заголовок"  :: Text)) (blogPostTitle      <$> mpost)
+    <*> areq markdownField  (bfs ("Содержание" :: Text)) (blogPostContent    <$> mpost)
+    <*> maybe (lift now) (pure . blogPostCreated) mpost
   where
+    categoriesList = selectField categories
+    categories :: Handler (OptionList CategoryId)
+    categories = do
+        entities <- runDB $ selectList [] [Asc CategoryTitle]
+        optionsPairs [(categoryTitle val, categoryId) | Entity categoryId val <- entities]
     now = liftIO getCurrentTime
 
 getBlogPostsR :: Handler Html
