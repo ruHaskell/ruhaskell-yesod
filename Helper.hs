@@ -2,6 +2,15 @@ module Helper where
 
 import Import
 import Database.Persist.Sql (rawSql)
+import Text.Printf (printf)
+
+renderDateAsTuple :: UTCTime -> String
+renderDateAsTuple time =
+    case toGregorian . utctDay $ time of
+        (y, m, d) -> printf "fromGregorian %d %d %d" y m d
+
+withRemaining :: [a] -> [(a, Int)]
+withRemaining xs = zip xs (reverse (enumFromTo 0 (length xs - 1)))
 
 -- isUniq :: Text -> EntityField v a -> Maybe a -> a -> Handler (Either Text a)
 isUniq errorMessage field mexclude value = do
