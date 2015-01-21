@@ -42,7 +42,7 @@ getNewCategoryR = do
 getCategoryR :: CategoryId -> Handler Html
 getCategoryR categoryId = do
     category <- runDB $ get404 categoryId
-    blogPosts <- runDB $ selectList [BlogPostCategoryId ==. Just categoryId] [Desc BlogPostCreated]
+    blogPosts <- selectBlogPostsByCategory categoryId
     defaultLayout $(widgetFile "categories/show")
 
 patchCategoryR :: CategoryId -> Handler Html

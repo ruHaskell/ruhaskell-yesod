@@ -1,11 +1,12 @@
 module Handler.BlogPost where
 
 import Import
+import Helper
 import Yesod.Text.Markdown
 import Yesod.Form.Bootstrap3
 
-blogPostList :: [Entity BlogPost] -> Widget
-blogPostList blogPosts = $(widgetFile "posts/list")
+blogPostList :: [(Entity BlogPost, Maybe (Entity Category))] -> Widget
+blogPostList blogPostsAndCategories = $(widgetFile "posts/list")
 
 blogPostForm :: Maybe BlogPost -> Form BlogPost
 blogPostForm mpost = renderBootstrap3 BootstrapBasicForm $ BlogPost
@@ -23,7 +24,7 @@ blogPostForm mpost = renderBootstrap3 BootstrapBasicForm $ BlogPost
 
 getBlogPostsR :: Handler Html
 getBlogPostsR = do
-    blogPosts <- runDB $ selectList [] [Desc BlogPostCreated]
+    blogPosts <- selectBlogPostsWithCategories
     defaultLayout $(widgetFile "posts/index")
 
 postBlogPostsR :: Handler Html

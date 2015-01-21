@@ -1,6 +1,9 @@
 <ul .post-list>
-  $forall Entity blogPostId blogPost <- blogPosts
+  $forall (Entity blogPostId blogPost, mcat) <- blogPostsAndCategories
     <li>
       <div .post-title>
+        $maybe Entity _ category <- mcat
+          <span .name-of-category>#{categoryTitle category}
+
         <a href=@{BlogPostR blogPostId}>#{blogPostTitle blogPost}
       <div .post-date>#{renderDateAsTuple $ blogPostCreated blogPost}

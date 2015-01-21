@@ -42,16 +42,9 @@ getNewTagR = do
 getTagR :: TagId -> Handler Html
 getTagR tagId = do
     tag <- runDB $ get404 tagId
-    blogPosts <- selectBlogPosts
+    blogPosts <- selectBlogPostsByTag tagId
     defaultLayout $(widgetFile "tags/show")
-  where
-    sql = "select ?? from blog_post \
-           left join blog_post_tag on blog_post.id = blog_post_tag.blog_post_id \
-           where blog_post_tag.tag_id = ? \
-           order by blog_post.created desc"
 
-    selectBlogPosts :: Handler [Entity BlogPost]
-    selectBlogPosts = runDB $ rawSql sql (keyToValues tagId)
 
 patchTagR :: TagId -> Handler Html
 patchTagR tagId = do
