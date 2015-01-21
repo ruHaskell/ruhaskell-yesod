@@ -18,7 +18,7 @@ getCategoriesR = do
     categories <- selectCategories
     defaultLayout $(widgetFile "categories/index")
   where
-    sql = "select ??, count(distinct blog_post.id) from category\
+    sql = "select ??, count(blog_post.id) from category\
            left join blog_post on category.id = blog_post.category_id group by category.id"
 
     selectCategories :: Handler [(Entity Category, Single Int)]

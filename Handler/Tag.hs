@@ -18,7 +18,7 @@ getTagsR = do
     tags <- selectTags
     defaultLayout $(widgetFile "tags/index")
   where
-    sql = "select ??, count(distinct blog_post_tag.blog_post_id) from tag\
+    sql = "select ??, count(blog_post_tag.blog_post_id) from tag\
            left join blog_post_tag on tag.id = blog_post_tag.tag_id group by tag.id"
 
     selectTags :: Handler [(Entity Tag, Single Int)]
