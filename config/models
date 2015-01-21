@@ -1,3 +1,9 @@
+User
+    ident Text
+    password Text Maybe
+    UniqueUser ident
+    deriving Typeable
+
 Category
     title Text
     UniqueCategory title

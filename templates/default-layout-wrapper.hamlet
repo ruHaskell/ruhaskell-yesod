@@ -60,6 +60,21 @@ $doctype 5
                           <span .fa .fa-pencil>
                         Добавить категорию
 
+              <ul .nav .navbar-nav .navbar-right>
+                $maybe Entity _ user <- ma
+                  <li>
+                    <a href="@{HomeR}">
+                      #{userIdent user}
+                  <li>
+                    <a href="@{AuthR LogoutR}">
+                      <i .fa .fa-lock>
+                      Выйти
+                $nothing
+                  <li>
+                    <a href="@{AuthR LoginR}">
+                      <i .fa .fa-unlock-alt>
+                      Войти
+
       <div #content role=main>
         ^{pageBody pc}
       <footer>
