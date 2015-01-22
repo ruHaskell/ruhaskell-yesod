@@ -3,7 +3,6 @@ module Handler.Tag where
 import Import
 import Helper
 import Yesod.Form.Bootstrap3
-import Database.Persist.Sql (Single(..), rawSql)
 import Handler.BlogPost (blogPostList)
 
 tagForm :: Maybe Tag -> Form Tag
@@ -17,12 +16,6 @@ getTagsR :: Handler Html
 getTagsR = do
     tags <- selectTags
     defaultLayout $(widgetFile "tags/index")
-  where
-    sql = "select ??, count(blog_post_tag.blog_post_id) from tag\
-           left join blog_post_tag on tag.id = blog_post_tag.tag_id group by tag.id"
-
-    selectTags :: Handler [(Entity Tag, Single Int)]
-    selectTags = runDB $ rawSql sql []
 
 postTagsR :: Handler Html
 postTagsR = do

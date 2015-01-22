@@ -7,7 +7,7 @@ $newline never
 
     <div .col-md-8 .col-sm-10 .col-xs-10>
       <div .alert .alert-info role=alert>
-        $forall ((Entity tagId tag, Single count), ix) <- withRemaining tags
+        $forall ((Entity tagId tag, count), ix) <- withRemaining tags
           <a href=@{TagR tagId}>
             #{tagTitle tag}
             <span .badge-for-tag-link>#{count}

@@ -1,7 +1,7 @@
 module Helper where
 
 import Import
-import Database.Persist.Sql (rawSql)
+import Database.Persist.Sql (Single(..), rawSql)
 import Text.Printf (printf)
 
 renderDateAsTuple :: UTCTime -> String
@@ -20,6 +20,25 @@ isUniq errorMessage field mexclude value = do
              else Right value
   where
     exclude = maybe [] (\x -> [field !=. x]) mexclude
+
+selectCategories :: Handler [(Entity Category, Int)]
+selectCategories = do
+    categories <- runDB $ rawSql sql []
+    return [(category, count') | (category, Single count') <- categories]
+  where
+    sql = "select ??, count(blog_post.id) from category \
+           left join blog_post on category.id = blog_post.category_id \
+           group by category.id"
+
+
+selectTags :: Handler [(Entity Tag, Int)]
+selectTags = do
+    tags <- runDB $ rawSql sql []
+    return [(tag, count') | (tag, Single count') <- tags]
+  where
+    sql = "select ??, count(blog_post_tag.blog_post_id) from tag \
+           left join blog_post_tag on tag.id = blog_post_tag.tag_id \
+           group by tag.id"
 
 selectBlogPostsWithCategories :: Handler [(Entity BlogPost, Maybe (Entity Category))]
 selectBlogPostsWithCategories = runDB $ rawSql sql []

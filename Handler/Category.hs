@@ -3,7 +3,6 @@ module Handler.Category where
 import Import
 import Helper
 import Yesod.Form.Bootstrap3
-import Database.Persist.Sql (Single(..), rawSql)
 import Handler.BlogPost (blogPostList)
 
 categoryForm :: Maybe Category -> Form Category
@@ -17,12 +16,6 @@ getCategoriesR :: Handler Html
 getCategoriesR = do
     categories <- selectCategories
     defaultLayout $(widgetFile "categories/index")
-  where
-    sql = "select ??, count(blog_post.id) from category\
-           left join blog_post on category.id = blog_post.category_id group by category.id"
-
-    selectCategories :: Handler [(Entity Category, Single Int)]
-    selectCategories = runDB $ rawSql sql []
 
 postCategoriesR :: Handler Html
 postCategoriesR = do

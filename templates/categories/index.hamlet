@@ -7,7 +7,7 @@ $newline never
 
     <div .col-md-8 .col-sm-10 .col-xs-10>
       <div .alert .alert-info role=alert>
-        $forall ((Entity categoryId category, Single count), ix) <- withRemaining categories
+        $forall ((Entity categoryId category, count), ix) <- withRemaining categories
           <a href=@{CategoryR categoryId}>
             #{categoryTitle category}
             <span .badge-for-tag-link>#{count}
