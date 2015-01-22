@@ -4,6 +4,7 @@ import Import.NoFoundation
 import Database.Persist.Sql (ConnectionPool, runSqlPool)
 import Text.Hamlet          (hamletFile)
 import Text.Jasmine         (minifym)
+import Yesod.Auth.OAuth2.Github (oauth2Github)
 import Yesod.Default.Util   (addStaticContentExternal)
 import Yesod.Core.Types     (Logger)
 
@@ -31,6 +32,7 @@ instance Yesod App where
 
     defaultLayout widget = do
         mmsg <- getMessage
+        ma <- maybeAuth
 
         pc <- widgetToPageContent $ do
             addStylesheetRemote "http://fonts.googleapis.com/css?family=PT+Sans:400,700&subset=cyrillic,latin"
@@ -41,6 +43,8 @@ instance Yesod App where
 
             $(widgetFile "default-layout")
         withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
+
+    authRoute _ = Just $ AuthR LoginR
 
     isAuthorized FaviconR _ = return Authorized
     isAuthorized RobotsR  _ = return Authorized
@@ -76,6 +80,55 @@ instance YesodPersist App where
 
 instance YesodPersistRunner App where
     getDBRunner = defaultGetDBRunner appConnPool
+
+instance YesodAuth App where
+    type AuthId App = UserId
+
+    -- Where to send a user after successful login
+    loginDest _ = HomeR
+    -- Where to send a user after logout
+    logoutDest _ = HomeR
+    -- Override the above two destinations when a Referer: header is present
+    redirectToReferer _ = False
+
+    getAuthId creds = runDB $ do
+        let extra = credsExtra creds
+        $(logDebug) $ "Extra account information: " <> (pack . show $ extra)
+
+        let ident =
+                 case lookup "login" extra of
+                     Just login -> login
+                     Nothing ->
+                         case lookup "email" extra of
+                             Just email -> email
+                             Nothing -> credsIdent creds
+
+        x <- getBy $ UniqueUser ident
+        case x of
+            Just (Entity uid _) -> return $ Just uid
+            Nothing -> do
+                fmap Just $ insert User
+                    { userIdent    = ident
+                    , userPassword = Nothing
+                    }
+
+    authPlugins app =
+        let mkPlugin (OA2Provider{..}) =
+                case (oa2provider, oa2clientId, oa2clientSecret) of
+                    (_, _, "not-configured") -> Nothing
+                    (_, "not-configured", _) -> Nothing
+
+                    ("github", cid, sec) ->
+                        Just $ oauth2Github (pack cid) (pack sec)
+
+                    _ -> Nothing
+        in catMaybes . map mkPlugin
+                     . appOA2Providers
+                     $ appSettings app
+
+    authHttpManager = getHttpManager
+
+instance YesodAuthPersist App
 
 instance RenderMessage App FormMessage where
     renderMessage _ _ = defaultFormMessage

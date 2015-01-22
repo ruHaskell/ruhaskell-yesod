@@ -20,3 +20,8 @@ database:
   port:     "_env:PGPORT:5432"
   database: "_env:PGDATABASE:pg_name"
   poolsize: "_env:PGPOOLSIZE:10"
+
+oauth2:
+  - provider: "github"
+    id:       "_env:GITHUB_CLIENT_ID:not-configured"
+    secret:   "_env:GITHUB_CLIENT_SECRET:not-configured"

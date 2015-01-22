@@ -27,7 +27,20 @@ data AppSettings = AppSettings
     , appMutableStatic          :: Bool
     , appSkipCombining          :: Bool
     , appHeroku                 :: Bool
+    , appOA2Providers           :: [OA2Provider]
     }
+
+data OA2Provider = OA2Provider
+    { oa2provider     :: String
+    , oa2clientId     :: String
+    , oa2clientSecret :: String
+    }
+
+instance FromJSON OA2Provider where
+    parseJSON = withObject "OA2Provider" $ \o -> OA2Provider
+        <$> o .: "provider"
+        <*> o .: "client_id"
+        <*> o .: "client_secret"
 
 instance FromJSON AppSettings where
     parseJSON = withObject "AppSettings" $ \o -> do
@@ -51,6 +64,8 @@ instance FromJSON AppSettings where
         appReloadTemplates        <- o .:? "reload-templates" .!= defaultDev
         appMutableStatic          <- o .:? "mutable-static"   .!= defaultDev
         appSkipCombining          <- o .:? "skip-combining"   .!= defaultDev
+
+        appOA2Providers           <- o .:? "oauth2"           .!= []
 
         return AppSettings {..}
 
