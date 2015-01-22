@@ -1,3 +1,5 @@
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/ruHaskell/forall)
+
 # ruhaskell.herokuapp.com
 
 Full source code for website. Attempt to make a copy of ruhaskell.org using Yesod.
