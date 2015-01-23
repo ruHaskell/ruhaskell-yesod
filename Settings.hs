@@ -39,8 +39,8 @@ data OA2Provider = OA2Provider
 instance FromJSON OA2Provider where
     parseJSON = withObject "OA2Provider" $ \o -> OA2Provider
         <$> o .: "provider"
-        <*> o .: "client_id"
-        <*> o .: "client_secret"
+        <*> o .: "id"
+        <*> o .: "secret"
 
 instance FromJSON AppSettings where
     parseJSON = withObject "AppSettings" $ \o -> do
