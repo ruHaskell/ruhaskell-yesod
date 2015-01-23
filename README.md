@@ -10,7 +10,7 @@ Instructions for installing Haskell and Yesod are available at http://www.yesodw
 
 ### Installation
 ```sh
-$ git clone https://github.com/b0oh/ruhaskell.git
+$ git clone https://github.com/ruHaskell/ruhaskell-yesod.git
 $ cd ruhaskell
 $ cabal sandbox init
 $ cabal install --only-dependencies --reorder-goals --max-backjumps=-1
