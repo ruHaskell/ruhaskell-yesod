@@ -30,7 +30,6 @@ selectCategories = do
            left join blog_post on category.id = blog_post.category_id \
            group by category.id"
 
-
 selectTags :: Handler [(Entity Tag, Int)]
 selectTags = do
     tags <- runDB $ rawSql sql []
@@ -39,6 +38,13 @@ selectTags = do
     sql = "select ??, count(blog_post_tag.blog_post_id) from tag \
            left join blog_post_tag on tag.id = blog_post_tag.tag_id \
            group by tag.id"
+
+selectTagsByBlogPost :: BlogPostId -> Handler [Entity Tag]
+selectTagsByBlogPost blogPostId = runDB $ rawSql sql (keyToValues blogPostId)
+  where
+    sql =  "select ?? from tag \
+            inner join blog_post_tag on blog_post_tag.tag_id = tag.id \
+            where blog_post_tag.blog_post_id = ?"
 
 selectBlogPostsWithCategories :: Handler [(Entity BlogPost, Maybe (Entity Category))]
 selectBlogPostsWithCategories = runDB $ rawSql sql []
