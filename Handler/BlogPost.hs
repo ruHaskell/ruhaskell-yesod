@@ -73,11 +73,12 @@ getNewBlogPostR = do
 getBlogPostR :: BlogPostId -> Handler Html
 getBlogPostR blogPostId = do
     (blogPost, category)  <- runDB $ do
-        blogPost' <- get404 blogPostId
-        category' <- case blogPostCategoryId blogPost' of
+        blogPost <- get404 blogPostId
+        category <- case blogPostCategoryId blogPost of
                          Just categoryId -> selectFirst [CategoryId ==. categoryId] []
                          Nothing -> return Nothing
-        return (blogPost', category')
+        return (blogPost, category)
+    tags <- selectTagsByBlogPost blogPostId
     defaultLayout $(widgetFile "posts/show")
 
 patchBlogPostR :: BlogPostId -> Handler Html

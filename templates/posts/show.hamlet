@@ -15,6 +15,12 @@ $newline never
           $nothing
             Nothing
           <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= []
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= [
+        $forall (Entity tagId tag, ix) <- withRemaining tags
+          <a href=@{TagR tagId}>
+            "#{tagTitle tag}"
+          $if ix /= 0
+            , #
+        ]
 
 #{blogPostContent blogPost}
