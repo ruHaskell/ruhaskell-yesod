@@ -318,6 +318,7 @@ a:hover {
 }
 
 .post-date {
+    font-family: 'Ubuntu Mono', monospace;
     text-align: right;
     color: #777;
     font-size: 16px;
