@@ -15,7 +15,7 @@ herokuDbConf = do
 
     return PostgresConf
         { pgConnStr  = formatParams params
-        , pgPoolSize = 100 -- TODO: how to set this?
+        , pgPoolSize = 20 -- TODO: how to set this?
         }
 
     where
