@@ -1,3 +1,71 @@
-$maybe msg <- mmsg
-  <div #message>#{msg}
-^{widget}
+<nav .navbar .navbar-default .navbar-fixed-top>
+  <div .container>
+    <div .navbar-header>
+      <button type=button .navbar-toggle .collapsed data-toggle=collapse data-target=#navbar>
+        <span .sr-only>_{MsgNavbarToggleNavigation}
+        <span .icon-bar>
+        <span .icon-bar>
+        <span .icon-bar>
+
+      <div #ruhaskell-logo>
+        <a .navbar-brand href=@{HomeR} title=_{MsgNavbarHomeLink}>
+          <img alt=ruHaskell src=@{StaticR images_logo_png} width=60>
+
+    <div #navbar .collapse .navbar-collapse>
+        <ul .nav .navbar-nav>
+          <li .dropdown>
+            <a .dropdown-toggle href="javascript:void()" data-toggle=dropdown role=button>
+               _{MsgNavbarPublications}
+               <span .caret>
+            <ul .dropdown-menu role=menu>
+              <li>
+                <a href=@{BlogPostsR}>
+                  <span .archive-link>
+                    <span .fa .fa-pencil>
+                  _{MsgBlogPosts}
+              <li>
+                <a href=@{TagsR}>
+                  <span .archive-link>
+                    <span .fa .fa-tags>
+                  _{MsgTags}
+              <li>
+                <a href=@{CategoriesR}>
+                  <span .archive-link>
+                    <span .fa .fa-star>
+                  _{MsgCategories}
+              <li .divider>
+              <li>
+                <a href=@{NewBlogPostR}>
+                  <span .archive-link>
+                    <span .fa .fa-pencil>
+                  _{MsgBlogPostAdd}
+              <li>
+                <a href=@{NewTagR}>
+                  <span .archive-link>
+                    <span .fa .fa-pencil>
+                  _{MsgTagAdd}
+              <li>
+                <a href=@{NewCategoryR}>
+                  <span .archive-link>
+                    <span .fa .fa-pencil>
+                  _{MsgCategoryAdd}
+
+        <ul .nav .navbar-nav .navbar-right>
+          $maybe Entity _ user <- ma
+            <li>
+              <a href="@{HomeR}">
+                #{userIdent user}
+            <li>
+              <a href="@{AuthR LogoutR}">
+                <i .fa .fa-lock>
+                _{MsgUserLogout}
+          $nothing
+            <li>
+              <a href="@{AuthR LoginR}">
+                <i .fa .fa-unlock-alt>
+                _{MsgUserLogin}
+
+<div #content role=main>
+  $maybe msg <- mmsg
+    <div #message>#{msg}
+  ^{widget}

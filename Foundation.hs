@@ -1,12 +1,12 @@
 module Foundation where
 
 import Import.NoFoundation
-import Database.Persist.Sql (ConnectionPool, runSqlPool)
-import Text.Hamlet          (hamletFile)
-import Text.Jasmine         (minifym)
+import Database.Persist.Sql     (ConnectionPool, runSqlPool)
+import Text.Hamlet              (hamletFile)
+import Text.Jasmine             (minifym)
 import Yesod.Auth.OAuth2.Github (oauth2Github)
-import Yesod.Default.Util   (addStaticContentExternal)
-import Yesod.Core.Types     (Logger)
+import Yesod.Default.Util       (addStaticContentExternal)
+import Yesod.Core.Types         (Logger)
 
 data App = App
     { appSettings    :: AppSettings
@@ -20,6 +20,8 @@ instance HasHttpManager App where
     getHttpManager = appHttpManager
 
 mkYesodData "App" $(parseRoutesFile "config/routes")
+
+mkMessage "App" "messages" "ru"
 
 type Form x = Html -> MForm (HandlerT App IO) (FormResult x, Widget)
 

@@ -1,13 +1,9 @@
-<div .intro>
-  Добро пожаловать на сайт русскоязычного сообщества Haskell-разработчиков!
-  Наше желание — использовать этот прекрасный язык, а не просто разговаривать о нём.
-  Наше стремление — объединить всех хаскелистов, говорящих по-русски.
-  Наша цель — увеличить долю использования Haskell в России.
+<div .intro>_{MsgHomeHello}
 
 <div style="padding-top: 40px">
-<h1>Последние статьи
+<h1>_{MsgBlogPostLatest}
 
 ^{blogPostList blogPosts}
 
 <div .clear-button>
-  <a href=@{BlogPostsR}>Остальные статьи
+  <a href=@{BlogPostsR}>_{MsgBlogPostAll}
