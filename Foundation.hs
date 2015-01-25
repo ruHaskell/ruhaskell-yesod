@@ -7,6 +7,7 @@ import Text.Jasmine             (minifym)
 import Yesod.Auth.OAuth2.Github (oauth2Github)
 import Yesod.Default.Util       (addStaticContentExternal)
 import Yesod.Core.Types         (Logger)
+import Yesod.Form.I18n.Russian  (russianFormMessage)
 
 data App = App
     { appSettings    :: AppSettings
@@ -133,4 +134,4 @@ instance YesodAuth App where
 instance YesodAuthPersist App
 
 instance RenderMessage App FormMessage where
-    renderMessage _ _ = defaultFormMessage
+    renderMessage _ _ = russianFormMessage
