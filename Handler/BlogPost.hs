@@ -17,9 +17,9 @@ blogPostList blogPostsAndCategories = $(widgetFile "posts/list")
 
 blogPostAForm :: Maybe BlogPost -> AForm Handler BlogPost
 blogPostAForm mpost = BlogPost
-    <$> aopt categoriesList (bfs ("Категория"  :: Text)) (blogPostCategoryId <$> mpost)
-    <*> areq textField      (bfs ("Заголовок"  :: Text)) (blogPostTitle      <$> mpost)
-    <*> areq markdownField  (bfs ("Содержание" :: Text)) (blogPostContent    <$> mpost)
+    <$> aopt categoriesList (bfs MsgBlogPostCategory) (blogPostCategoryId <$> mpost)
+    <*> areq textField      (bfs MsgBlogPostTitle)    (blogPostTitle      <$> mpost)
+    <*> areq markdownField  (bfs MsgBlogPostContent)  (blogPostContent    <$> mpost)
     <*> maybe (lift now) (pure . blogPostCreated) mpost
   where
     categoriesList = selectField categories
@@ -30,10 +30,9 @@ blogPostAForm mpost = BlogPost
     now = liftIO getCurrentTime
 
 tagsAForm :: Maybe [TagId] -> AForm Handler (Maybe [TagId])
-tagsAForm mvalues = aopt (checkboxesField tags) (fs "blog_post_tags" "Теги") (Just mvalues)
+tagsAForm mvalues = aopt (checkboxesField tags) fs (Just mvalues)
   where
-    fs :: Text -> Text -> FieldSettings site
-    fs fieldId msg = FieldSettings (SomeMessage msg) Nothing (Just fieldId) Nothing []
+    fs = FieldSettings (SomeMessage MsgBlogPostTags) Nothing (Just "blog_post_tags") Nothing []
     tags :: Handler (OptionList TagId)
     tags = do
         entities <- runDB $ selectList [] [Asc TagTitle]
@@ -61,7 +60,7 @@ postBlogPostsR = do
                 blogPostId <- insert blogPost
                 insertMany $ map (BlogPostTag blogPostId) tagIds
                 return blogPostId
-            setMessage "Post was added"
+            setMessageI MsgBlogPostWasAdded
             redirect $ BlogPostR blogPostId
         _ -> defaultLayout $(widgetFile "posts/new")
 
@@ -91,7 +90,7 @@ patchBlogPostR blogPostId = do
                 replace blogPostId blogPost'
                 deleteWhere [BlogPostTagBlogPostId ==. blogPostId]
                 insertMany $ map (BlogPostTag blogPostId) tagIds'
-            setMessage "Post was updated"
+            setMessageI MsgBlogPostWasUpdated
             redirect $ BlogPostR blogPostId
         _ -> defaultLayout $(widgetFile "posts/edit")
 
