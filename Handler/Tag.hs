@@ -7,10 +7,10 @@ import Handler.BlogPost (blogPostList)
 
 tagForm :: Maybe Tag -> Form Tag
 tagForm mtag = renderBootstrap3 BootstrapBasicForm $ Tag
-               <$> areq titleField (bfs ("Заголовок" :: Text)) mtitle
+               <$> areq titleField (bfs MsgTagTitle) mtitle
   where
     mtitle     = tagTitle <$> mtag
-    titleField = checkM (isUniq ("Такой тег уже есть" :: Text) TagTitle mtitle) textField
+    titleField = checkM (isUniq MsgTagAlreadyExists TagTitle mtitle) textField
 
 getTagsR :: Handler Html
 getTagsR = do
@@ -23,7 +23,7 @@ postTagsR = do
     case res of
         FormSuccess tag -> do
             _ <- runDB $ insert tag
-            setMessage "Tag was added"
+            setMessageI MsgTagWasAdded
             redirect TagsR
         _ -> defaultLayout $(widgetFile "tags/new")
 
@@ -38,7 +38,6 @@ getTagR tagId = do
     blogPosts <- selectBlogPostsByTag tagId
     defaultLayout $(widgetFile "tags/show")
 
-
 patchTagR :: TagId -> Handler Html
 patchTagR tagId = do
     tag <- runDB $ get404 tagId
@@ -46,7 +45,7 @@ patchTagR tagId = do
     case res of
         FormSuccess tag' -> do
             runDB $ replace tagId $ tag'
-            setMessage "Tag was updated"
+            setMessageI MsgTagWasUpdated
             redirect TagsR
         _ -> defaultLayout $(widgetFile "tags/edit")
 

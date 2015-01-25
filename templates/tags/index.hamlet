@@ -1,5 +1,5 @@
 $newline never
-<h1>Теги
+<h1>_{MsgTags}
 
 <div #tagsCloud>
   <div .row>

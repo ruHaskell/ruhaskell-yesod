@@ -25,8 +25,12 @@ CategoryWasAdded:      Категория успешно добавлена
 CategoryWasUpdated:    Категория успешно обновлена
 CategoryAlreadyExists: Такая категория уже существует
 
-Tags:   Теги
-TagAdd: Добавить тег
+Tags:             Теги
+TagAdd:           Добавить тег
+TagTitle:         Заголовок
+TagWasAdded:      Тег успешно добавлен
+TagWasUpdated:    Тег успешно обновлён
+TagAlreadyExists: Такой тег уже существует
 
 UserLogin:  Войти
 UserLogout: Выйти
