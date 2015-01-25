@@ -7,10 +7,10 @@ import Handler.BlogPost (blogPostList)
 
 categoryForm :: Maybe Category -> Form Category
 categoryForm mcat = renderBootstrap3 BootstrapBasicForm $ Category
-                    <$> areq titleField (bfs ("Заголовок" :: Text)) mtitle
+                    <$> areq titleField (bfs MsgCategoryTitle) mtitle
   where
     mtitle     = categoryTitle <$> mcat
-    titleField = checkM (isUniq ("Такая категория уже есть" :: Text) CategoryTitle mtitle) textField
+    titleField = checkM (isUniq MsgCategoryAlreadyExists CategoryTitle mtitle) textField
 
 getCategoriesR :: Handler Html
 getCategoriesR = do
@@ -23,7 +23,7 @@ postCategoriesR = do
     case res of
         FormSuccess category -> do
             _ <- runDB $ insert category
-            setMessage "Category was added"
+            setMessageI MsgCategoryWasAdded
             redirect CategoriesR
         _ -> defaultLayout $(widgetFile "categories/new")
 
@@ -45,7 +45,7 @@ patchCategoryR categoryId = do
     case res of
         FormSuccess category' -> do
             runDB $ replace categoryId $ category'
-            setMessage "Category was updated"
+            setMessageI MsgCategoryWasUpdated
             redirect CategoriesR
         _ -> defaultLayout $(widgetFile "categories/edit")
 

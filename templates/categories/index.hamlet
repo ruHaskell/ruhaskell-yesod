@@ -1,5 +1,5 @@
 $newline never
-<h1>Категории
+<h1>_{MsgCategories}
 
 <div #tagsCloud>
   <div .row>

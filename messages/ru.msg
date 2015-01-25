@@ -18,8 +18,12 @@ BlogPostTags:       Теги
 BlogPostWasAdded:   Статья успешно добавлена
 BlogPostWasUpdated: Статья успешно обновлена
 
-Categories:  Категории
-CategoryAdd: Добавить категорию
+Categories:            Категории
+CategoryAdd:           Добавить категорию
+CategoryTitle:         Заголовок
+CategoryWasAdded:      Категория успешно добавлена
+CategoryWasUpdated:    Категория успешно обновлена
+CategoryAlreadyExists: Такая категория уже существует
 
 Tags:   Теги
 TagAdd: Добавить тег
