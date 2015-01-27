@@ -1,13 +1,3 @@
-User
-    ident Text
-    password Text Maybe
-    UniqueUser ident
-    deriving Typeable
-
-Category
-    title Text
-    UniqueCategory title
-
 BlogPost
     categoryId CategoryId Maybe
     title Text
@@ -15,11 +5,24 @@ BlogPost
     created UTCTime
     deriving
 
-Tag
-    title Text
-    UniqueTag title
-
 BlogPostTag
     blogPostId BlogPostId
     tagId TagId
     UniqueBlogPostTag blogPostId tagId
+
+Category
+    title Text
+    UniqueCategory title
+
+Tag
+    title Text
+    UniqueTag title
+
+User
+    ident Text
+    name Text
+    avatarUrl Text
+    admin Bool
+    UniqueUser ident
+    UniqueUserName name
+    deriving Typeable

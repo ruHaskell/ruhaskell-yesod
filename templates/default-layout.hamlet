@@ -54,7 +54,7 @@
           $maybe Entity _ user <- ma
             <li>
               <a href="@{HomeR}">
-                #{userIdent user}
+                #{userName user}
             <li>
               <a href="@{AuthR LogoutR}">
                 <i .fa .fa-lock>

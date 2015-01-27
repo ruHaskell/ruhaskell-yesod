@@ -87,47 +87,34 @@ instance YesodPersistRunner App where
 instance YesodAuth App where
     type AuthId App = UserId
 
-    -- Where to send a user after successful login
-    loginDest _ = HomeR
-    -- Where to send a user after logout
-    logoutDest _ = HomeR
-    -- Override the above two destinations when a Referer: header is present
+    loginDest         _ = HomeR
+    logoutDest        _ = HomeR
     redirectToReferer _ = False
 
     getAuthId creds = runDB $ do
-        let extra = credsExtra creds
         $(logDebug) $ "Extra account information: " <> (pack . show $ extra)
-
-        let ident =
-                 case lookup "login" extra of
-                     Just login -> login
-                     Nothing ->
-                         case lookup "email" extra of
-                             Just email -> email
-                             Nothing -> credsIdent creds
 
         x <- getBy $ UniqueUser ident
         case x of
             Just (Entity uid _) -> return $ Just uid
             Nothing -> do
-                fmap Just $ insert User
-                    { userIdent    = ident
-                    , userPassword = Nothing
-                    }
+                let name      = lookupExtra "login"
+                    avatarUrl = lookupExtra "avatar_url"
+                fmap Just $ insert $ User ident name avatarUrl False
+      where
+        ident = credsIdent creds
+        extra = credsExtra creds
+        lookupExtra key = fromMaybe (error "No " <> key <> " in extra credentials")  (lookup key extra)
 
     authPlugins app =
-        let mkPlugin (OA2Provider{..}) =
-                case (oa2provider, oa2clientId, oa2clientSecret) of
-                    (_, _, "not-configured") -> Nothing
-                    (_, "not-configured", _) -> Nothing
-
-                    ("github", cid, sec) ->
-                        Just $ oauth2Github (pack cid) (pack sec)
-
-                    _ -> Nothing
-        in catMaybes . map mkPlugin
-                     . appOA2Providers
-                     $ appSettings app
+        mapMaybe mkPlugin . appOA2Providers $ appSettings app
+      where
+        mkPlugin (OA2Provider{..}) =
+            case (oa2provider, oa2clientId, oa2clientSecret) of
+                (_, _, "not-configured") -> Nothing
+                (_, "not-configured", _) -> Nothing
+                ("github", cid, sec)     -> Just $ oauth2Github (pack cid) (pack sec)
+                _                        -> Nothing
 
     authHttpManager = getHttpManager
 
