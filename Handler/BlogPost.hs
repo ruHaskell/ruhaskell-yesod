@@ -17,7 +17,8 @@ blogPostList blogPostsAndCategories = $(widgetFile "posts/list")
 
 blogPostAForm :: Maybe BlogPost -> AForm Handler BlogPost
 blogPostAForm mpost = BlogPost
-    <$> aopt categoriesList (bfs MsgBlogPostCategory) (blogPostCategoryId <$> mpost)
+    <$> lift requireAuthId
+    <*> aopt categoriesList (bfs MsgBlogPostCategory) (blogPostCategoryId <$> mpost)
     <*> areq textField      (bfs MsgBlogPostTitle)    (blogPostTitle      <$> mpost)
     <*> areq markdownField  (bfs MsgBlogPostContent)  (blogPostContent    <$> mpost)
     <*> maybe (lift now) (pure . blogPostCreated) mpost
@@ -72,12 +73,13 @@ getNewBlogPostR = do
 getBlogPostR :: BlogPostId -> Handler Html
 getBlogPostR blogPostId = do
     mauth <- maybeAuth
-    (blogPost, category)  <- runDB $ do
+    (blogPost, author, category)  <- runDB $ do
         blogPost <- get404 blogPostId
+        author <- get404 $ blogPostAuthorId blogPost
         category <- case blogPostCategoryId blogPost of
                          Just categoryId -> selectFirst [CategoryId ==. categoryId] []
                          Nothing -> return Nothing
-        return (blogPost, category)
+        return (blogPost, author, category)
     tags <- selectTagsByBlogPost blogPostId
     defaultLayout $(widgetFile "posts/show")
 

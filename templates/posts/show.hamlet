@@ -9,7 +9,7 @@ $newline never
 <div .row>
   <div .col-xs-5 .col-sm-5 .col-md-4 .col-lg-4>
      <div .post-info>
-        <strong>where</strong> author&nbsp;&nbsp;&nbsp;= ""<br/>
+        <strong>where</strong> author&nbsp;&nbsp;&nbsp;= "#{userName author}"<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= #{renderDateAsTuple $ blogPostCreated blogPost}<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;category = #
           $maybe Entity categoryId cat <- category

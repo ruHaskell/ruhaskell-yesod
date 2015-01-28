@@ -1,9 +1,9 @@
 BlogPost
+    authorId UserId
     categoryId CategoryId Maybe
     title Text
     content Markdown
     created UTCTime
-    deriving
 
 BlogPostTag
     blogPostId BlogPostId
