@@ -49,21 +49,21 @@ instance Yesod App where
 
     authRoute _ = Just $ AuthR LoginR
 
-    isAuthorized  FaviconR         _    = return Authorized
-    isAuthorized  RobotsR          _    = return Authorized
-    isAuthorized  BlogPostsR       True = authorizeAdmin
-    isAuthorized  NewBlogPostR     _    = authorizeAdmin
-    isAuthorized (EditBlogPostR _) _    = authorizeAdmin
-    isAuthorized (BlogPostR     _) True = authorizeAdmin
-    isAuthorized  CategoriesR      True = authorizeAdmin
-    isAuthorized  NewCategoryR     _    = authorizeAdmin
-    isAuthorized (EditCategoryR _) _    = authorizeAdmin
-    isAuthorized (CategoryR     _) True = authorizeAdmin
-    isAuthorized  TagsR            True = authorizeAdmin
-    isAuthorized  NewTagR          _    = authorizeAdmin
-    isAuthorized (EditTagR      _) _    = authorizeAdmin
-    isAuthorized (TagR          _) True = authorizeAdmin
-    isAuthorized _                 _    = return Authorized
+    isAuthorized  FaviconR          _    = return Authorized
+    isAuthorized  RobotsR           _    = return Authorized
+    isAuthorized  BlogPostsR        True = authenticated
+    isAuthorized  NewBlogPostR      _    = authenticated
+    isAuthorized (EditBlogPostR id) _    = authorizeOwner id
+    isAuthorized (BlogPostR     id) True = authorizeOwner id
+    isAuthorized  CategoriesR       True = authorizeAdmin
+    isAuthorized  NewCategoryR      _    = authorizeAdmin
+    isAuthorized (EditCategoryR _)  _    = authorizeAdmin
+    isAuthorized (CategoryR     _)  True = authorizeAdmin
+    isAuthorized  TagsR             True = authorizeAdmin
+    isAuthorized  NewTagR           _    = authorizeAdmin
+    isAuthorized (EditTagR      _)  _    = authorizeAdmin
+    isAuthorized (TagR          _)  True = authorizeAdmin
+    isAuthorized _                  _    = return Authorized
 
     addStaticContent ext mime content = do
         master <- getYesod
@@ -87,6 +87,11 @@ instance Yesod App where
 
     makeLogger = return . appLogger
 
+authenticated :: Handler AuthResult
+authenticated = do
+    mauth <- maybeAuth
+    return $ maybe AuthenticationRequired (const Authorized) mauth
+
 authorizeAdmin :: Handler AuthResult
 authorizeAdmin = do
     mauth <- maybeAuth
@@ -95,6 +100,18 @@ authorizeAdmin = do
         Just (Entity _ u)
             | userAdmin u -> return Authorized
             | otherwise   -> unauthorizedI MsgAuthNotAnAdmin
+
+authorizeOwner :: BlogPostId -> Handler AuthResult
+authorizeOwner blogPostId = do
+    blogPost <- runDB $ get404 blogPostId
+    let authorId = blogPostAuthorId blogPost
+    mauth <- maybeAuth
+    case mauth of
+        Nothing -> return AuthenticationRequired
+        Just (Entity id u)
+            | userAdmin u    -> return Authorized
+            | id == authorId -> return Authorized
+            | otherwise      -> unauthorizedI MsgAuthNotAnAdmin
 
 instance YesodPersist App where
     type YesodPersistBackend App = SqlBackend

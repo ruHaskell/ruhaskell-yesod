@@ -4,6 +4,9 @@ import Import
 import Database.Persist.Sql (Single(..), rawSql)
 import Text.Printf (printf)
 
+allowedToWriteBlogPost :: UserId -> User -> BlogPost -> Bool
+allowedToWriteBlogPost userId user blogPost = userAdmin user || userId == blogPostAuthorId blogPost
+
 renderDateAsTuple :: UTCTime -> String
 renderDateAsTuple time =
     case toGregorian . utctDay $ time of

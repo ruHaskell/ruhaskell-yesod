@@ -1,8 +1,8 @@
 $newline never
 <h1>
   #{blogPostTitle blogPost} #
-  $maybe Entity _ user <- mauth
-    $if userAdmin user
+  $maybe Entity userId user <- mauth
+    $if allowedToWriteBlogPost userId user blogPost
       <a .edit href=@{EditBlogPostR blogPostId}>
         <span .glyphicon .glyphicon-pencil aria-hidden=true>
 
