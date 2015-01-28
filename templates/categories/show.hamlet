@@ -1,3 +1,8 @@
-<h1>#{categoryTitle category}
+<h1>
+  #{categoryTitle category} #
+  $maybe Entity _ user <- mauth
+    $if userAdmin user
+      <a .edit href=@{EditCategoryR categoryId}>
+        <span .glyphicon .glyphicon-pencil aria-hidden=true>
 
 ^{blogPostList blogPosts}

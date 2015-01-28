@@ -34,6 +34,7 @@ getNewTagR = do
 
 getTagR :: TagId -> Handler Html
 getTagR tagId = do
+    mauth <- maybeAuth
     tag <- runDB $ get404 tagId
     blogPosts <- selectBlogPostsByTag tagId
     defaultLayout $(widgetFile "tags/show")

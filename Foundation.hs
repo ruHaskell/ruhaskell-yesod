@@ -35,7 +35,7 @@ instance Yesod App where
 
     defaultLayout widget = do
         mmsg <- getMessage
-        ma <- maybeAuth
+        mauth <- maybeAuth
 
         pc <- widgetToPageContent $ do
             addStylesheetRemote "http://fonts.googleapis.com/css?family=PT+Sans:400,700&subset=cyrillic,latin"
@@ -49,9 +49,21 @@ instance Yesod App where
 
     authRoute _ = Just $ AuthR LoginR
 
-    isAuthorized FaviconR _ = return Authorized
-    isAuthorized RobotsR  _ = return Authorized
-    isAuthorized _        _ = return Authorized
+    isAuthorized  FaviconR         _    = return Authorized
+    isAuthorized  RobotsR          _    = return Authorized
+    isAuthorized  BlogPostsR       True = authorizeAdmin
+    isAuthorized  NewBlogPostR     _    = authorizeAdmin
+    isAuthorized (EditBlogPostR _) _    = authorizeAdmin
+    isAuthorized (BlogPostR     _) True = authorizeAdmin
+    isAuthorized  CategoriesR      True = authorizeAdmin
+    isAuthorized  NewCategoryR     _    = authorizeAdmin
+    isAuthorized (EditCategoryR _) _    = authorizeAdmin
+    isAuthorized (CategoryR     _) True = authorizeAdmin
+    isAuthorized  TagsR            True = authorizeAdmin
+    isAuthorized  NewTagR          _    = authorizeAdmin
+    isAuthorized (EditTagR      _) _    = authorizeAdmin
+    isAuthorized (TagR          _) True = authorizeAdmin
+    isAuthorized _                 _    = return Authorized
 
     addStaticContent ext mime content = do
         master <- getYesod
@@ -74,6 +86,15 @@ instance Yesod App where
             || level == LevelError
 
     makeLogger = return . appLogger
+
+authorizeAdmin :: Handler AuthResult
+authorizeAdmin = do
+    mauth <- maybeAuth
+    case mauth of
+        Nothing -> return AuthenticationRequired
+        Just (Entity _ u)
+            | userAdmin u -> return Authorized
+            | otherwise   -> unauthorizedI MsgAuthNotAnAdmin
 
 instance YesodPersist App where
     type YesodPersistBackend App = SqlBackend

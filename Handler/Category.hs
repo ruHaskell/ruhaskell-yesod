@@ -34,6 +34,7 @@ getNewCategoryR = do
 
 getCategoryR :: CategoryId -> Handler Html
 getCategoryR categoryId = do
+    mauth <- maybeAuth
     category <- runDB $ get404 categoryId
     blogPosts <- selectBlogPostsByCategory categoryId
     defaultLayout $(widgetFile "categories/show")

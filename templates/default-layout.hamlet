@@ -33,37 +33,40 @@
                   <span .archive-link>
                     <span .fa .fa-star>
                   _{MsgCategories}
-              <li .divider>
-              <li>
-                <a href=@{NewBlogPostR}>
-                  <span .archive-link>
-                    <span .fa .fa-pencil>
-                  _{MsgBlogPostAdd}
-              <li>
-                <a href=@{NewTagR}>
-                  <span .archive-link>
-                    <span .fa .fa-pencil>
-                  _{MsgTagAdd}
-              <li>
-                <a href=@{NewCategoryR}>
-                  <span .archive-link>
-                    <span .fa .fa-pencil>
-                  _{MsgCategoryAdd}
+
+              $maybe Entity _ user <- mauth
+                <li .divider>
+                <li>
+                  <a href=@{NewBlogPostR}>
+                    <span .archive-link>
+                      <span .fa .fa-pencil>
+                    _{MsgBlogPostAdd}
+                $if userAdmin user
+                  <li>
+                    <a href=@{NewTagR}>
+                      <span .archive-link>
+                        <span .fa .fa-pencil>
+                      _{MsgTagAdd}
+                  <li>
+                    <a href=@{NewCategoryR}>
+                      <span .archive-link>
+                        <span .fa .fa-pencil>
+                      _{MsgCategoryAdd}
 
         <ul .nav .navbar-nav .navbar-right>
-          $maybe Entity _ user <- ma
+          $maybe Entity _ user <- mauth
             <li>
               <a href="@{HomeR}">
                 #{userName user}
             <li>
               <a href="@{AuthR LogoutR}">
                 <i .fa .fa-lock>
-                _{MsgUserLogout}
+                _{MsgAuthLogout}
           $nothing
             <li>
               <a href="@{AuthR LoginR}">
                 <i .fa .fa-unlock-alt>
-                _{MsgUserLogin}
+                _{MsgAuthLogin}
 
 <div #content role=main>
   $maybe msg <- mmsg

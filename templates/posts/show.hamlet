@@ -1,5 +1,10 @@
 $newline never
-<h1>#{blogPostTitle blogPost}
+<h1>
+  #{blogPostTitle blogPost} #
+  $maybe Entity _ user <- mauth
+    $if userAdmin user
+      <a .edit href=@{EditBlogPostR blogPostId}>
+        <span .glyphicon .glyphicon-pencil aria-hidden=true>
 
 <div .row>
   <div .col-xs-5 .col-sm-5 .col-md-4 .col-lg-4>

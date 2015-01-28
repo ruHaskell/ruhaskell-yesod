@@ -32,5 +32,6 @@ TagWasAdded:      Тег успешно добавлен
 TagWasUpdated:    Тег успешно обновлён
 TagAlreadyExists: Такой тег уже существует
 
-UserLogin:  Войти
-UserLogout: Выйти
+AuthLogin:      Войти
+AuthLogout:     Выйти
+AuthNotAnAdmin: Для этого действия нужны администраторские права

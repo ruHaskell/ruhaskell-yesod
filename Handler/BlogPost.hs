@@ -71,6 +71,7 @@ getNewBlogPostR = do
 
 getBlogPostR :: BlogPostId -> Handler Html
 getBlogPostR blogPostId = do
+    mauth <- maybeAuth
     (blogPost, category)  <- runDB $ do
         blogPost <- get404 blogPostId
         category <- case blogPostCategoryId blogPost of

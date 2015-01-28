@@ -1,3 +1,8 @@
-<h1>#{tagTitle tag}
+<h1>
+  #{tagTitle tag} #
+  $maybe Entity _ user <- mauth
+    $if userAdmin user
+      <a .edit href=@{EditTagR tagId}>
+        <span .glyphicon .glyphicon-pencil aria-hidden=true>
 
 ^{blogPostList blogPosts}
