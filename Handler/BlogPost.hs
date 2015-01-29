@@ -22,6 +22,7 @@ blogPostAForm mpost = BlogPost
     <*> areq textField      (bfs MsgBlogPostTitle)    (blogPostTitle      <$> mpost)
     <*> areq markdownField  (bfs MsgBlogPostContent)  (blogPostContent    <$> mpost)
     <*> maybe (lift now) (pure . blogPostCreated) mpost
+    <*> areq checkBoxField  (bfs MsgBlogPostDraft)    (blogPostDraft      <$> mpost)
   where
     categoriesList = selectField categories
     categories :: Handler (OptionList CategoryId)

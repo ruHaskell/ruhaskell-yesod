@@ -4,6 +4,7 @@ BlogPost
     title Text
     content Markdown
     created UTCTime
+    draft Bool default=True
 
 BlogPostTag
     blogPostId BlogPostId
@@ -22,7 +23,7 @@ User
     ident Text
     name Text
     avatarUrl Text
-    admin Bool
+    admin Bool default=False
     UniqueUser ident
     UniqueUserName name
     deriving Typeable

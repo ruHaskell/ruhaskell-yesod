@@ -14,6 +14,7 @@ BlogPostAdd:        Добавить статью
 BlogPostCategory:   Категория
 BlogPostTitle:      Заголовок
 BlogPostContent:    Содержание
+BlogPostDraft:      Черновик
 BlogPostTags:       Теги
 BlogPostWasAdded:   Статья успешно добавлена
 BlogPostWasUpdated: Статья успешно обновлена
