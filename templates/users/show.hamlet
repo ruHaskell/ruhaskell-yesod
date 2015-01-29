@@ -1,0 +1,9 @@
+<row .profile>
+  <div .col-sm-2>
+    <img .img-responsive src=#{userAvatarUrl user}>
+  <div .col-sm-10>
+    <h1>#{userName user}
+
+<row>
+  <div .col-sm-12>
+    ^{blogPostList blogPosts}

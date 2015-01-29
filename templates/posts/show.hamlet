@@ -9,17 +9,20 @@ $newline never
 <div .row>
   <div .col-xs-5 .col-sm-5 .col-md-4 .col-lg-4>
      <div .post-info>
-        <strong>where</strong> author&nbsp;&nbsp;&nbsp;= "#{userName author}"<br/>
+        <strong>where</strong> author&nbsp;&nbsp;&nbsp;= "
+        <a href=@{UserR $ blogPostAuthorId blogPost}>#{userName author}
+        "
+        <br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= #{renderDateAsTuple $ blogPostCreated blogPost}<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;category = #
-          $maybe Entity categoryId cat <- category
-            Just "
-            <a href=@{CategoryR categoryId}>
-              #{categoryTitle cat}
-            "
-          $nothing
-            Nothing
-          <br>
+        $maybe Entity categoryId cat <- category
+          Just "
+          <a href=@{CategoryR categoryId}>
+            #{categoryTitle cat}
+          "
+        $nothing
+          Nothing
+        <br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= [
         $forall (Entity tagId tag, ix) <- withRemaining tags
           <a href=@{TagR tagId}>

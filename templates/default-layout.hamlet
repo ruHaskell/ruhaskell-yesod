@@ -54,17 +54,17 @@
                       _{MsgCategoryAdd}
 
         <ul .nav .navbar-nav .navbar-right>
-          $maybe Entity _ user <- mauth
+          $maybe Entity userId user <- mauth
             <li>
-              <a href="@{HomeR}">
+              <a href=@{UserR userId}>
                 #{userName user}
             <li>
-              <a href="@{AuthR LogoutR}">
+              <a href=@{AuthR LogoutR}>
                 <i .fa .fa-lock>
                 _{MsgAuthLogout}
           $nothing
             <li>
-              <a href="@{AuthR LoginR}">
+              <a href=@{AuthR LoginR}>
                 <i .fa .fa-unlock-alt>
                 _{MsgAuthLogin}
 

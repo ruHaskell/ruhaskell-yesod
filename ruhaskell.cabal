@@ -29,6 +29,7 @@ library
                      Handler.BlogPost
                      Handler.Category
                      Handler.Tag
+                     Handler.User
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT

@@ -28,6 +28,7 @@ import Handler.Home
 import Handler.BlogPost
 import Handler.Category
 import Handler.Tag
+import Handler.User
 
 mkYesodDispatch "App" resourcesApp
 

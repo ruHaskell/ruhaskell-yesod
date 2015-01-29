@@ -498,3 +498,7 @@ form #blog_post_tags>label>input[type=checkbox] {
     margin-top: 4px \9;
     margin-left: -20px;
 }
+
+row.profile h1 {
+    text-align: left;
+}

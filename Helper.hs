@@ -64,6 +64,14 @@ selectBlogPostsByCategory categoryId = runDB $ rawSql sql (keyToValues categoryI
             where category.id = ? \
             order by blog_post.created desc"
 
+selectBlogPostsByUser :: UserId -> Handler [(Entity BlogPost, Maybe (Entity Category))]
+selectBlogPostsByUser userId = runDB $ rawSql sql (keyToValues userId)
+  where
+    sql =  "select ??, ?? from blog_post \
+            inner join category on blog_post.category_id = category.id \
+            where blog_post.author_id = ? \
+            order by blog_post.created desc"
+
 selectBlogPostsByTag :: TagId -> Handler [(Entity BlogPost, Maybe (Entity Category))]
 selectBlogPostsByTag tagId = runDB $ rawSql sql (keyToValues tagId)
   where
