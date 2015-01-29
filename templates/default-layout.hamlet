@@ -33,6 +33,11 @@
                   <span .archive-link>
                     <span .fa .fa-star>
                   _{MsgCategories}
+              <li>
+                <a href=@{UsersR}>
+                  <span .archive-link>
+                    <span .fa .fa-users>
+                  _{MsgUsers}
 
               $maybe Entity _ user <- mauth
                 <li .divider>

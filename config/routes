@@ -17,4 +17,5 @@
 /tags/new                    NewTagR       GET
 /tags/!#TagId                TagR          GET PATCH DELETE
 /tags/#TagId/edit            EditTagR      GET
+/users                       UsersR        GET
 /users/#UserId               UserR         GET

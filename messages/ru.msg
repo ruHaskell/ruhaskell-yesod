@@ -35,3 +35,5 @@ TagAlreadyExists: Такой тег уже существует
 AuthLogin:      Войти
 AuthLogout:     Выйти
 AuthNotAnAdmin: Для этого действия нужны администраторские права
+
+Users: Пользователи

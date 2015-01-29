@@ -42,6 +42,15 @@ selectTags = do
            left join blog_post_tag on tag.id = blog_post_tag.tag_id \
            group by tag.id"
 
+selectUsers :: Handler [(Entity User, Int)]
+selectUsers = do
+    users <- runDB $ rawSql sql []
+    return [(user, count') | (user, Single count') <- users]
+  where
+    sql = "select ??, count(blog_post.author_id) from \"user\" \
+           left join blog_post on \"user\".id = blog_post.author_id \
+           group by \"user\".id"
+
 selectTagsByBlogPost :: BlogPostId -> Handler [Entity Tag]
 selectTagsByBlogPost blogPostId = runDB $ rawSql sql (keyToValues blogPostId)
   where
