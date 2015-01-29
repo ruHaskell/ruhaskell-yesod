@@ -49,21 +49,25 @@ instance Yesod App where
 
     authRoute _ = Just $ AuthR LoginR
 
-    isAuthorized  FaviconR          _    = return Authorized
-    isAuthorized  RobotsR           _    = return Authorized
-    isAuthorized  BlogPostsR        True = authenticated
-    isAuthorized  NewBlogPostR      _    = authenticated
-    isAuthorized (EditBlogPostR id) _    = authorizeOwner id
-    isAuthorized (BlogPostR     id) True = authorizeOwner id
-    isAuthorized  CategoriesR       True = authorizeAdmin
-    isAuthorized  NewCategoryR      _    = authorizeAdmin
-    isAuthorized (EditCategoryR _)  _    = authorizeAdmin
-    isAuthorized (CategoryR     _)  True = authorizeAdmin
-    isAuthorized  TagsR             True = authorizeAdmin
-    isAuthorized  NewTagR           _    = authorizeAdmin
-    isAuthorized (EditTagR      _)  _    = authorizeAdmin
-    isAuthorized (TagR          _)  True = authorizeAdmin
-    isAuthorized _                  _    = return Authorized
+    isAuthorized  FaviconR           _    = return Authorized
+    isAuthorized  RobotsR            _    = return Authorized
+    isAuthorized  BlogPostsR         True = authenticated
+    isAuthorized  NewBlogPostR       _    = authenticated
+    isAuthorized (EditBlogPostR id') _    = authorizeBlogPost id'
+    isAuthorized (BlogPostR     id') True = authorizeBlogPost id'
+    isAuthorized  CategoriesR        True = authorizeAdmin
+    isAuthorized  NewCategoryR       _    = authorizeAdmin
+    isAuthorized (EditCategoryR _)   _    = authorizeAdmin
+    isAuthorized (CategoryR     _)   True = authorizeAdmin
+    isAuthorized  TagsR              True = authorizeAdmin
+    isAuthorized  NewTagR            _    = authorizeAdmin
+    isAuthorized (EditTagR      _)   _    = authorizeAdmin
+    isAuthorized (TagR          _)   True = authorizeAdmin
+    isAuthorized  UsersR             True = authorizeAdmin
+    isAuthorized  NewUserR           _    = authorizeAdmin
+    isAuthorized (EditUserR     id') _    = authorizeProfile id'
+    isAuthorized (UserR         id') True = authorizeProfile id'
+    isAuthorized _                   _    = return Authorized
 
     addStaticContent ext mime content = do
         master <- getYesod
@@ -101,17 +105,28 @@ authorizeAdmin = do
             | userAdmin u -> return Authorized
             | otherwise   -> unauthorizedI MsgAuthNotAnAdmin
 
-authorizeOwner :: BlogPostId -> Handler AuthResult
-authorizeOwner blogPostId = do
+authorizeBlogPost :: BlogPostId -> Handler AuthResult
+authorizeBlogPost blogPostId = do
     blogPost <- runDB $ get404 blogPostId
     let authorId = blogPostAuthorId blogPost
     mauth <- maybeAuth
     case mauth of
         Nothing -> return AuthenticationRequired
-        Just (Entity id u)
-            | userAdmin u    -> return Authorized
-            | id == authorId -> return Authorized
-            | otherwise      -> unauthorizedI MsgAuthNotAnAdmin
+        Just (Entity id' u)
+            | userAdmin u     -> return Authorized
+            | id' == authorId -> return Authorized
+            | otherwise       -> unauthorizedI MsgAuthNotAnAdmin
+
+
+authorizeProfile :: UserId -> Handler AuthResult
+authorizeProfile userId = do
+    mauth <- maybeAuth
+    case mauth of
+        Nothing -> return AuthenticationRequired
+        Just (Entity id' u)
+            | userAdmin u   -> return Authorized
+            | id' == userId -> return Authorized
+            | otherwise     -> unauthorizedI MsgAuthNotAnAdmin
 
 instance YesodPersist App where
     type YesodPersistBackend App = SqlBackend

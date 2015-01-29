@@ -1,0 +1,3 @@
+<form action=@{UsersR} method=post enctype=#{enctype}>
+  ^{formWidget}
+  <button .btn .btn-default type=submit>_{MsgFormSubmitAdd}

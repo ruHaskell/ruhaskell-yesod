@@ -1,8 +1,13 @@
 <row .profile>
   <div .col-sm-2>
-    <img .img-responsive src=#{userAvatarUrl user}>
+    <img .img-responsive src=#{userAvatarUrl profile}>
   <div .col-sm-10>
-    <h1>#{userName user}
+    <h1>
+      #{userName profile} #
+      $maybe Entity _ user <- mauth
+        $if allowedToWriteProfile user profile
+          <a .edit href=@{EditUserR userId}>
+            <span .glyphicon .glyphicon-pencil aria-hidden=true>
 
 <row>
   <div .col-sm-12>

@@ -1,0 +1,3 @@
+<form method=post action=@{UserR userId}?_method=PATCH enctype=#{enctype}>
+  ^{formWidget}
+  <button .btn .btn-default type=submit>_{MsgFormSubmitUpdate}

@@ -36,4 +36,13 @@ AuthLogin:      Войти
 AuthLogout:     Выйти
 AuthNotAnAdmin: Для этого действия нужны администраторские права
 
-Users: Пользователи
+Users:                  Пользователи
+UserAdd:                Добавить пользователя
+UserIdent:              Github ident
+UserName:               Имя
+UserAvatarUrl:          Веб-адресс картинки
+UserAdmin:              Администратор
+UserWasAdded:           Пользователь успешно добавлен
+UserWasUpdated:         Пользователь успешно обновлён
+UserIdentAlreadyExists: Пользователь с таким ident уже существует
+UserNameAlreadyExists:  Пользователь с таким именем уже существует

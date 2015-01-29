@@ -7,6 +7,9 @@ import Text.Printf (printf)
 allowedToWriteBlogPost :: UserId -> User -> BlogPost -> Bool
 allowedToWriteBlogPost userId user blogPost = userAdmin user || userId == blogPostAuthorId blogPost
 
+allowedToWriteProfile :: User -> User -> Bool
+allowedToWriteProfile user profile = userAdmin user || userName user == userName profile
+
 renderDateAsTuple :: UTCTime -> String
 renderDateAsTuple time =
     case toGregorian . utctDay $ time of

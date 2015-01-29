@@ -57,6 +57,11 @@
                       <span .archive-link>
                         <span .fa .fa-pencil>
                       _{MsgCategoryAdd}
+                  <li>
+                    <a href=@{NewUserR}>
+                      <span .archive-link>
+                        <span .fa .fa-pencil>
+                      _{MsgUserAdd}
 
         <ul .nav .navbar-nav .navbar-right>
           $maybe Entity userId user <- mauth
