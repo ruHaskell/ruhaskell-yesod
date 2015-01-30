@@ -11,9 +11,11 @@ BlogPosts:          Статьи
 BlogPostLatest:     Последние статьи
 BlogPostAll:        Все статьи
 BlogPostAdd:        Добавить статью
+BlogPostUser:       Пользователь
 BlogPostCategory:   Категория
 BlogPostTitle:      Заголовок
 BlogPostContent:    Содержание
+BlogPostDate:       Дата
 BlogPostDraft:      Черновик
 BlogPostTags:       Теги
 BlogPostWasAdded:   Статья успешно добавлена

@@ -1,9 +1,15 @@
+--{-# LANGUAGE AllowAmbiguousTypes #-}
 module Handler.BlogPost where
 
 import Import
 import Helper
 import Yesod.Text.Markdown
 import Yesod.Form.Bootstrap3
+
+isAdmin :: Handler Bool
+isAdmin = do
+    mauth <- maybeAuth
+    return $ maybe False (userAdmin . entityVal) mauth
 
 getBlogPostWithTags :: BlogPostId -> Handler (BlogPost, [TagId])
 getBlogPostWithTags blogPostId = do
@@ -15,15 +21,25 @@ getBlogPostWithTags blogPostId = do
 blogPostList :: [(Entity BlogPost, Maybe (Entity Category))] -> Widget
 blogPostList blogPostsAndCategories = $(widgetFile "posts/list")
 
-blogPostAForm :: Maybe BlogPost -> AForm Handler BlogPost
-blogPostAForm mpost = BlogPost
-    <$> lift requireAuthId
+blogPostAForm :: Bool -> Maybe BlogPost -> AForm Handler BlogPost
+blogPostAForm admin mpost = BlogPost
+    <$> authorField admin
     <*> aopt categoriesList (bfs MsgBlogPostCategory) (blogPostCategoryId <$> mpost)
     <*> areq textField      (bfs MsgBlogPostTitle)    (blogPostTitle      <$> mpost)
     <*> areq markdownField  (bfs MsgBlogPostContent)  (blogPostContent    <$> mpost)
-    <*> maybe (lift now) (pure . blogPostCreated) mpost
+    <*> createdField admin
     <*> areq checkBoxField  (bfs MsgBlogPostDraft)    (blogPostDraft      <$> mpost)
   where
+    authorField True  = areq (selectField users) (bfs MsgBlogPostUser) (blogPostAuthorId <$> mpost)
+    authorField False = lift requireAuthId
+
+    createdField True  = areq utcField (bfs MsgBlogPostDate) (blogPostCreated <$> mpost)
+    createdField False = maybe (lift now) (pure . blogPostCreated) mpost
+
+    users :: Handler (OptionList UserId)
+    users = do
+        entities <- runDB $ selectList [] [Asc UserName]
+        optionsPairs [(userName val, userId) | Entity userId val <- entities]
     categoriesList = selectField categories
     categories :: Handler (OptionList CategoryId)
     categories = do
@@ -40,10 +56,10 @@ tagsAForm mvalues = aopt (checkboxesField tags) fs (Just mvalues)
         entities <- runDB $ selectList [] [Asc TagTitle]
         optionsPairs [(tagTitle val, tagId) | Entity tagId val <- entities]
 
-blogPostForm :: Maybe (BlogPost, [TagId]) -> Form (BlogPost, [TagId])
-blogPostForm mpair = renderBootstrap3 BootstrapBasicForm $ (,)
-                     <$> blogPostAForm mpost
-                     <*> fmap (fromMaybe []) (tagsAForm mvalues)
+blogPostForm :: Bool -> Maybe (BlogPost, [TagId]) -> Form (BlogPost, [TagId])
+blogPostForm admin mpair = renderBootstrap3 BootstrapBasicForm $ (,)
+                           <$> blogPostAForm admin mpost
+                           <*> fmap (fromMaybe []) (tagsAForm mvalues)
   where
     mpost   = fst <$> mpair
     mvalues = snd <$> mpair
@@ -55,7 +71,8 @@ getBlogPostsR = do
 
 postBlogPostsR :: Handler Html
 postBlogPostsR = do
-    ((res, blogPostWidget), enctype) <- runFormPost $ blogPostForm Nothing
+    admin <- isAdmin
+    ((res, blogPostWidget), enctype) <- runFormPost $ blogPostForm admin Nothing
     case res of
         FormSuccess (blogPost, tagIds) -> do
             blogPostId <- runDB $ do
@@ -68,7 +85,8 @@ postBlogPostsR = do
 
 getNewBlogPostR :: Handler Html
 getNewBlogPostR = do
-    (blogPostWidget, enctype) <- generateFormPost $ blogPostForm Nothing
+    admin <- isAdmin
+    (blogPostWidget, enctype) <- generateFormPost $ blogPostForm admin Nothing
     defaultLayout $(widgetFile "posts/new")
 
 getBlogPostR :: BlogPostId -> Handler Html
@@ -86,8 +104,9 @@ getBlogPostR blogPostId = do
 
 patchBlogPostR :: BlogPostId -> Handler Html
 patchBlogPostR blogPostId = do
+    admin <- isAdmin
     (blogPost, tagIds) <- getBlogPostWithTags blogPostId
-    ((res, blogPostWidget), enctype) <- runFormPost . blogPostForm $ Just (blogPost, tagIds)
+    ((res, blogPostWidget), enctype) <- runFormPost $ blogPostForm admin $ Just (blogPost, tagIds)
     case res of
         FormSuccess (blogPost', tagIds') -> do
             runDB $ do
@@ -100,8 +119,9 @@ patchBlogPostR blogPostId = do
 
 getEditBlogPostR :: BlogPostId -> Handler Html
 getEditBlogPostR blogPostId = do
+    admin <- isAdmin
     (blogPost, tagIds) <- getBlogPostWithTags blogPostId
-    (blogPostWidget, enctype) <- generateFormPost . blogPostForm $ Just (blogPost, tagIds)
+    (blogPostWidget, enctype) <- generateFormPost $ blogPostForm admin $ Just (blogPost, tagIds)
     defaultLayout $(widgetFile "posts/edit")
 
 deleteBlogPostR :: BlogPostId -> Handler Html

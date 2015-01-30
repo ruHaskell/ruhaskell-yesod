@@ -3,6 +3,7 @@ module Helper where
 import Import
 import Database.Persist.Sql (Single(..), rawSql)
 import Text.Printf (printf)
+import Data.Time.Format
 
 allowedToWriteBlogPost :: UserId -> User -> BlogPost -> Bool
 allowedToWriteBlogPost userId user blogPost = userAdmin user || userId == blogPostAuthorId blogPost
@@ -14,6 +15,14 @@ renderDateAsTuple :: UTCTime -> String
 renderDateAsTuple time =
     case toGregorian . utctDay $ time of
         (y, m, d) -> printf "fromGregorian %d %d %d" y m d
+
+parseUtc :: Text -> UTCTime
+parseUtc = (readTime defaultTimeLocale "%-d %-m %Y") . unpack
+
+formatUtc :: UTCTime -> Text
+formatUtc = pack . (formatTime defaultTimeLocale "%-d %-m %Y")
+
+utcField = checkMMap (return . Right . parseUtc :: Text -> Handler (Either Text UTCTime)) formatUtc textField
 
 withRemaining :: [a] -> [(a, Int)]
 withRemaining xs = zip xs (reverse (enumFromTo 0 (length xs - 1)))
